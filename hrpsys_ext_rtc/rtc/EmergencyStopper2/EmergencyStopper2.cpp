@@ -97,7 +97,7 @@ RTC::ReturnCode_t EmergencyStopper2::onExecute(RTC::UniqueId ec_id)
   double dt = 1.0 / rate;
 
   if (this->m_qRefIn.isNew()) {
-    this->m_qRefIn.read();
+    while (this->m_qRefIn.isNew()) this->m_qRefIn.read();
     if(this->m_qRef.data.length() == this->robot->numJoints()){
       for(int i=0;i<this->robot->numJoints();i++) this->joints[i].qRef = this->m_qRef.data[i];
     }else{
@@ -107,31 +107,31 @@ RTC::ReturnCode_t EmergencyStopper2::onExecute(RTC::UniqueId ec_id)
     return RTC::RTC_OK;  // qRef が届かなければ何もしない
   }
   if (this->m_tauRefIn.isNew()) {
-    this->m_tauRefIn.read();
+    while (this->m_tauRefIn.isNew()) this->m_tauRefIn.read();
     if(this->m_tauRef.data.length() == this->robot->numJoints()){
       for(int i=0;i<this->robot->numJoints();i++) this->joints[i].tauRef = this->m_tauRef.data[i];
     }
   }
   if (this->m_qActIn.isNew()) {
-    this->m_qActIn.read();
+    while (this->m_qActIn.isNew()) this->m_qActIn.read();
     if(this->m_qAct.data.length() == this->robot->numJoints()){
       for(int i=0;i<this->robot->numJoints();i++) this->joints[i].qAct = this->m_qAct.data[i];
     }
   }
   if (this->m_tauCtlIn.isNew()) {
-    this->m_tauCtlIn.read();
+    while (this->m_tauCtlIn.isNew()) this->m_tauCtlIn.read();
     if(this->m_tauCtl.data.length() == this->robot->numJoints()){
       for(int i=0;i<this->robot->numJoints();i++) this->joints[i].tauCtl = this->m_tauCtl.data[i];
     }
   }
   if (this->m_stopSignalIn.isNew()) {
-    this->m_stopSignalIn.read();
+    while (this->m_stopSignalIn.isNew()) this->m_stopSignalIn.read();
     if(this->m_stopSignal.data) {
       for (int i=0; i<this->robot->numJoints(); i++) this->joints[i].stopMotion();
     }
   }
   if (this->m_releaseSignalIn.isNew()) {
-    this->m_releaseSignalIn.read();
+    while (this->m_releaseSignalIn.isNew()) this->m_releaseSignalIn.read();
     if(this->m_releaseSignal.data) {
       for (int i=0; i<this->robot->numJoints(); i++) this->joints[i].releaseMotion(this->recover_time);
     }

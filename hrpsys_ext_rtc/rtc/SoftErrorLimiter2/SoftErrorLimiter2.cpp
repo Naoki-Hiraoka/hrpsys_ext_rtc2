@@ -236,13 +236,13 @@ RTC::ReturnCode_t SoftErrorLimiter2::onExecute(RTC::UniqueId ec_id)
   }
 
   if (m_qRefIn.isNew()) {
-    m_qRefIn.read();
+    while (m_qRefIn.isNew()) m_qRefIn.read();
   }
   if (m_qCurrentIn.isNew()) {
-    m_qCurrentIn.read();
+    while (m_qCurrentIn.isNew()) m_qCurrentIn.read();
   }
   if (m_servoStateIn.isNew()) {
-    m_servoStateIn.read();
+    while (m_servoStateIn.isNew()) m_servoStateIn.read();
   }
 
   /*

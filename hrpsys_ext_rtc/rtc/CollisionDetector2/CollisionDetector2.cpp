@@ -152,7 +152,7 @@ RTC::ReturnCode_t CollisionDetector2::onExecute(RTC::UniqueId ec_id)
 
     bool is_qRef_updated = false;
     if (this->m_qRefIn.isNew() ) {
-      this->m_qRefIn.read();
+      while (this->m_qRefIn.isNew() ) this->m_qRefIn.read();
       if(this->m_qRef.data.length() == this->m_robot->numJoints()){
         for(int i=0;i<this->m_robot->numJoints();i++) this->m_qRefv[i] = this->m_qRef.data[i];
         is_qRef_updated = true;
@@ -160,7 +160,7 @@ RTC::ReturnCode_t CollisionDetector2::onExecute(RTC::UniqueId ec_id)
     }
     bool is_qCurrent_updated = false;
     if (this->m_qCurrentIn.isNew() ) {
-      this->m_qCurrentIn.read();
+      while (this->m_qCurrentIn.isNew() ) this->m_qCurrentIn.read();
       if(this->m_qCurrent.data.length() == this->m_robot->numJoints()){
         for(int i=0;i<this->m_robot->numJoints();i++) this->m_qCurrentv[i] = this->m_qCurrent.data[i];
         is_qCurrent_updated = true;
@@ -170,7 +170,7 @@ RTC::ReturnCode_t CollisionDetector2::onExecute(RTC::UniqueId ec_id)
       return RTC::RTC_OK;  // qRef, qCurrent が届かなければ何もしない
     }
     if (this->m_servoStateIn.isNew()) {
-        this->m_servoStateIn.read();
+      while (this->m_servoStateIn.isNew()) this->m_servoStateIn.read();
         for (int i = 0; i < this->m_robot->numJoints(); i++ ){
           this->m_servoStatev[i] = (this->m_servoState.data[i][0] & OpenHRP::RobotHardwareService::SERVO_STATE_MASK) >> OpenHRP::RobotHardwareService::SERVO_STATE_SHIFT;
         }
