@@ -20,6 +20,9 @@ pkg_check_modules(hrpsys hrpsys-base REQUIRED)
 find_package(PkgConfig)
 pkg_check_modules(openrtm_aist openrtm-aist REQUIRED)
 
+find_package(Boost REQUIRED COMPONENTS
+  program_options)
+
 include_directories(
   ${catkin_INCLUDE_DIRS}
   ${CHOREONOID_INCLUDE_DIRS}
@@ -49,3 +52,10 @@ add_dependencies(CollisionDetector2 RTMBUILD2_${PROJECT_NAME}_genrpc) # wait for
 
 add_executable(CollisionDetector2Comp CollisionDetector2Comp.cpp)
 target_link_libraries(CollisionDetector2Comp CollisionDetector2)
+
+add_executable(SetupCollisionPair SetupCollisionPair.cpp)
+target_link_libraries(SetupCollisionPair
+  ${catkin_LIBRARIES}
+  ${CHOREONOID_BODY_LIBRARIES}
+  Boost::program_options
+  )
