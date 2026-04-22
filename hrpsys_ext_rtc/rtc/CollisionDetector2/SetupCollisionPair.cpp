@@ -116,8 +116,8 @@ int main (int argc, char** argv)
       cnoid::LinkPtr l1 = robot->link(i);
       for (unsigned int j=i+1; j<robot->numLinks(); j++) {
         cnoid::LinkPtr l2 = robot->link(j);
-        if ( l1->collisionShape() &&
-             l2->collisionShape() &&
+        if ( l1->collisionShape()->numChildren() != 0 &&
+             l2->collisionShape()->numChildren() != 0 &&
              blacklist.find(l1->name()) == blacklist.end() &&
              blacklist.find(l2->name()) == blacklist.end() &&
              blacklist.find(l1->name() + ":" + l2->name()) == blacklist.end() &&
